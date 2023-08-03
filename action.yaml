@@ -36,7 +36,7 @@ runs:
     - name: Docker Build
       run: |
         echo "building container image"
-        export CONTAINER_IMAGE_REFERENCE=${{ inputs.container_image_name }}:${{ inputs.container_image_tag }}
+        export CONTAINER_IMAGE_REFERENCE=${{ inputs.container_image_repo }}:${{ inputs.container_image_tag }}
         docker build -t $CONTAINER_IMAGE_REFERENCE .
         echo "built container image"
       shell: bash
@@ -44,6 +44,6 @@ runs:
     - name: Docker Push
       run: |
         echo "pushing container image"
-        export CONTAINER_IMAGE_REFERENCE=${{ inputs.container_image_name }}:${{ inputs.container_image_tag }}
+        export CONTAINER_IMAGE_REFERENCE=${{ inputs.container_image_repo }}:${{ inputs.container_image_tag }}
         docker push $CONTAINER_IMAGE_REFERENCE
       shell: bash
