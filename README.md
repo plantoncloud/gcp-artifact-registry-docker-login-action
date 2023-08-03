@@ -7,7 +7,7 @@ This GitHub Action allows you to build a Docker image and push it to a specified
 You can include the action in your workflow to take advantage of its capabilities.
 
 ```yaml
-uses: plantoncloud/gha-docker-build-push@main
+uses: plantoncloud/gha-build-and-push-docker-image@main
 with:
   planton_cloud_artifact_store_id: '<id-of-the-artifact-store-on-planton-cloud>'
   docker_repo_hostname: '<hostname-of-the-docker-repository'
