@@ -1,0 +1,47 @@
+name: Docker Build and Push
+description: 'Builds a Docker image and pushes it to the specified Docker repository.'
+
+inputs:
+  planton_cloud_artifact_store_id:
+    description: 'ID of the Artifact Store on Planton Cloud.'
+    required: true
+  docker_repo_hostname:
+    description: 'Hostname of the Docker repository'
+    required: true
+  container_image_name:
+    description: 'Name of the Docker image to be built and pushed.'
+    required: true
+  container_image_tag:
+    description: 'Tag of the Docker image to be built and pushed.'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Fetch Artifact Store Key
+      run: |
+        echo "fetching artifact writer key from planton cloud service"
+        artifact_writer_key_json_file="$(pwd)/artifact-writer-key.json"
+        planton artifact-store secrets get-writer-key --output-file $artifact_writer_key_json_file --artifact-store-id ${{ inputs.planton_cloud_artifact_store_id }}
+        echo "fetched artifact writer key from planton cloud service"
+        echo "ARTIFACT_STORE_KEY=$(cat $artifact_writer_key_json_file)" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Docker Login
+      run: docker login -u _json_key -p ${{ env.ARTIFACT_STORE_KEY }} https://${{ inputs.docker_repo_hostname }}
+      shell: bash
+
+    - name: Docker Build
+      run: |
+        echo "building container image"
+        export CONTAINER_IMAGE_REFERENCE=${{ inputs.container_image_name }}:${{ inputs.container_image_tag }}
+        docker build -t $CONTAINER_IMAGE_REFERENCE .
+        echo "built container image"
+      shell: bash
+
+    - name: Docker Push
+      run: |
+        echo "pushing container image"
+        export CONTAINER_IMAGE_REFERENCE=${{ inputs.container_image_name }}:${{ inputs.container_image_tag }}
+        docker push $CONTAINER_IMAGE_REFERENCE
+      shell: bash
