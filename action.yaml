@@ -28,7 +28,9 @@ runs:
       shell: bash
 
     - name: Docker Login
-      run: docker login -u _json_key -p ${{ env.ARTIFACT_WRITE_KEY_JSON_FILE_PATH }} https://${{ inputs.docker_repo_hostname }}
+      run: |
+        ARTIFACT_WRITE_KEY_JSON=$(cat ${{ env.ARTIFACT_WRITE_KEY_JSON_FILE_PATH }})
+        echo $ARTIFACT_WRITE_KEY_JSON | docker login -u _json_key --password-stdin https://${{ inputs.docker_repo_hostname }}
       shell: bash
 
     - name: Docker Build
