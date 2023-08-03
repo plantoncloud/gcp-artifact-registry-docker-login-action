@@ -8,8 +8,8 @@ inputs:
   docker_repo_hostname:
     description: 'Hostname of the Docker repository'
     required: true
-  container_image_name:
-    description: 'Name of the Docker image to be built and pushed.'
+  container_image_repo:
+    description: 'Repo of the Docker image to be built and pushed.'
     required: true
   container_image_tag:
     description: 'Tag of the Docker image to be built and pushed.'
