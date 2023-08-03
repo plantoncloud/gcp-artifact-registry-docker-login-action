@@ -24,11 +24,11 @@ runs:
         artifact_writer_key_json_file="$(pwd)/artifact-writer-key.json"
         planton artifact-store secrets get-writer-key --output-file $artifact_writer_key_json_file --artifact-store-id ${{ inputs.planton_cloud_artifact_store_id }}
         echo "fetched artifact writer key from planton cloud service"
-        echo "ARTIFACT_STORE_KEY=$(cat $artifact_writer_key_json_file)" >> $GITHUB_ENV
+        echo "ARTIFACT_WRITE_KEY_JSON_FILE_PATH=$artifact_writer_key_json_file" >> $GITHUB_ENV
       shell: bash
 
     - name: Docker Login
-      run: docker login -u _json_key -p ${{ env.ARTIFACT_STORE_KEY }} https://${{ inputs.docker_repo_hostname }}
+      run: docker login -u _json_key -p ${{ env.ARTIFACT_WRITE_KEY_JSON_FILE_PATH }} https://${{ inputs.docker_repo_hostname }}
       shell: bash
 
     - name: Docker Build
