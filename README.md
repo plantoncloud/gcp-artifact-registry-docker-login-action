@@ -1,31 +1,34 @@
-# Docker Build and Push GitHub Action
+# Login to GCP Artifact Registry Docker Repo Action
 
-This GitHub Action allows you to build a Docker image and push it to a specified Docker repository using credentials from Artifact-Store on Planton Cloud.
+This GitHub action fetches an Artifact Store writer key from Planton Cloud and uses it to log in to the specified Docker repository in the Google Cloud Platform's Artifact Registry.
+
+## Inputs
+
+### `planton_cloud_artifact_store_id`
+
+**Required** ID of the Artifact Store on Planton Cloud.
+
+### `docker_repo_hostname`
+
+**Required** Hostname of the Docker repository in the Google Cloud Platform's Artifact Registry.
 
 ## Usage
 
-You can include the action in your workflow to take advantage of its capabilities.
-
 ```yaml
-uses: plantoncloud/build-and-push-docker-image-action@main
-with:
-  planton_cloud_artifact_store_id: '<id-of-the-artifact-store-on-planton-cloud>'
-  docker_repo_hostname: '<hostname-of-the-docker-repository'
-  container_image_repo: '<repo-of-the-docker-image-to-be-built-and-pushed>'
-  container_image_tag: '<tag-of-the-docker-image-to-be-built-and-pushed>'
+steps:
+  - name: Login to GCP Artifact Registry Docker Repo
+    uses: plantoncloud/login-to-gcp-artifact-registry-docker-repo-action@main
+    with:
+      planton_cloud_artifact_store_id: your-artifact-store-id
+      docker_repo_hostname: your-docker-repo-hostname
 ```
 
-### Inputs
+After executing this action, the runner will be authenticated and able to interact with the specified Docker repository in the Google Cloud Platform's Artifact Registry using the fetched writer key from Planton Cloud.
 
-- `planton_cloud_artifact_store_id`: This is the ID of the Artifact Store on Planton Cloud. It is a required input.
-- `docker_repo_hostname`: This is the hostname of the Docker repository. It is a required input.
-- `container_image_repo`: This is the repo of the Docker image to be built and pushed. It is a required input.
-- `container_image_tag`: This is the tag of the Docker image to be built and pushed. It is a required input.
+## Contributing
 
-## How it works
+If you have suggestions for how this GitHub Action could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
 
-This action performs the following steps:
-- Fetch the Artifact Store key from Planton Cloud service
-- Login to the Docker registry using the fetched key
-- Build the Docker image using the provided image repo and tag
-- Push the Docker image to the specified Docker repository
+## License
+
+This project is licensed under the [MIT License](LICENSE).

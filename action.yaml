@@ -1,5 +1,5 @@
-name: Docker Build and Push
-description: 'Builds a Docker image and pushes it to the specified Docker repository.'
+name: Login to GCP Artifact Registry Docker Repo
+description: Uses Credentials from Planton Cloud Artifact Store for Docker Login
 
 inputs:
   planton_cloud_artifact_store_id:
@@ -7,12 +7,6 @@ inputs:
     required: true
   docker_repo_hostname:
     description: 'Hostname of the Docker repository'
-    required: true
-  container_image_repo:
-    description: 'Repo of the Docker image to be built and pushed.'
-    required: true
-  container_image_tag:
-    description: 'Tag of the Docker image to be built and pushed.'
     required: true
 
 runs:
@@ -31,19 +25,4 @@ runs:
       run: |
         ARTIFACT_WRITE_KEY_JSON=$(cat ${{ env.ARTIFACT_WRITE_KEY_JSON_FILE_PATH }})
         echo $ARTIFACT_WRITE_KEY_JSON | docker login -u _json_key --password-stdin https://${{ inputs.docker_repo_hostname }}
-      shell: bash
-
-    - name: Docker Build
-      run: |
-        echo "building container image"
-        export CONTAINER_IMAGE_REFERENCE=${{ inputs.container_image_repo }}:${{ inputs.container_image_tag }}
-        docker build -t $CONTAINER_IMAGE_REFERENCE .
-        echo "built container image"
-      shell: bash
-
-    - name: Docker Push
-      run: |
-        echo "pushing container image"
-        export CONTAINER_IMAGE_REFERENCE=${{ inputs.container_image_repo }}:${{ inputs.container_image_tag }}
-        docker push $CONTAINER_IMAGE_REFERENCE
       shell: bash
