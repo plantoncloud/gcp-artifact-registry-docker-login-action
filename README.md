@@ -17,7 +17,7 @@ This GitHub action fetches an Artifact Store writer key from Planton Cloud and u
 ```yaml
 steps:
   - name: Login to GCP Artifact Registry Docker Repo
-    uses: plantoncloud/login-to-gcp-artifact-registry-docker-repo-action@main
+    uses: plantoncloud/gcp-artifact-registry-docker-login-action@main
     with:
       planton_cloud_artifact_store_id: your-artifact-store-id
       docker_repo_hostname: your-docker-repo-hostname
